@@ -1,0 +1,42 @@
+{
+  "name": "flight-request",
+  "description": "A Flight mixin for making XHR requests",
+  "version": "1.0.0",
+  "keywords": [
+    "flight",
+    "flightjs",
+    "flight-component",
+    "component",
+    "flight-mixin",
+    "mixin",
+    "flight-request"
+  ],
+  "main": "lib/with_request.js",
+  "dependencies": {
+    "flight": "^1.2.0"
+  },
+  "devDependencies": {
+    "jasmine-flight": "^2.2.0",
+    "jasmine-ajax": "^2.0.1"
+  },
+  "ignore": [
+    ".gitignore",
+    ".gitattributes",
+    ".travis.yml",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md",
+    "test",
+    "package.json",
+    "karma.conf.js"
+  ],
+  "homepage": "https://github.com/giuseppeg/flight-request",
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.0",
+    "commit": "bd26484cdb792e6a68e63c30cba58e89bbd9df61"
+  },
+  "_source": "git://github.com/giuseppeg/flight-request.git",
+  "_target": "*",
+  "_originalSource": "flight-request"
+}
