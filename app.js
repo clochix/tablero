@@ -1,5 +1,5 @@
 var express = require('express');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var XHR = require('xmlhttprequest').XMLHttpRequest;
 var url = require('url');
 var sass = require('node-sass');
 var path = require('path');
@@ -14,6 +14,7 @@ var configClient = require('./config/client.js');
 var oauthUrl = configServer.oauthUrl;
 var clientId = configServer.clientId;
 var clientSecret = configServer.clientSecret;
+var port;
 
 app.use(sass.middleware({
   src: __dirname + '/app',
@@ -28,6 +29,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.get('/config', function(req, res) {
+  'use strict';
   res.send(configClient);
 });
 
@@ -49,6 +51,7 @@ app.post('/config', function(req, res) {
 });
 
 app.get('/request_code', function(req, res) {
+  'use strict';
   var authorizeUrl = oauthUrl + '/authorize?client_id=' + clientId;
 
   var access = req.query.access || req.cookies.access || 'public_repo';
@@ -58,12 +61,13 @@ app.get('/request_code', function(req, res) {
 });
 
 app.get('/request_auth_token', function(req, res) {
+  'use strict';
   var getAuthTokenUrl = oauthUrl + '/access_token?' +
   'client_id=' + clientId +
   '&client_secret=' + clientSecret +
   '&code=' + req.query.code;
 
-  var xhr = new XMLHttpRequest();
+  var xhr = new XHR();
   xhr.open('POST', getAuthTokenUrl, false);
   xhr.send();
 
@@ -72,9 +76,9 @@ app.get('/request_auth_token', function(req, res) {
   }
 
   var fakeUrl = 'http://fake.uri/?' + xhr.responseText;
-  var repositoryAccess = url.parse(fakeUrl, true).query['scope'];
+  var repositoryAccess = url.parse(fakeUrl, true).query.scope;
 
-  res.redirect('/?access=' + repositoryAccess + '#' + url.parse(fakeUrl, true).query['access_token']);
+  res.redirect('/?access=' + repositoryAccess + '#' + url.parse(fakeUrl, true).query.access_token);
 });
 
 require('./lib/priorization')(app, {

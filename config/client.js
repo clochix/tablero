@@ -3,8 +3,11 @@ var labels = {};
 var configurable = require('../lib/configurable');
 
 function addRepo(name, key, label) {
-  configurable.get(key) && (repos[name] = configurable.get(key));
-  configurable.get(key) && (labels[name] = (label || repos[name]));
+  'use strict';
+  if (configurable.get(key)) {
+    repos[name]  = configurable.get(key);
+    labels[name] = (label || repos[name]);
+  }
 }
 
 configurable.setSilentMode(true);
@@ -17,17 +20,18 @@ addRepo('website', 'PX_PAGES', 'Website');
 
 
 var maxDynaReposQuantity = 5;
-for (i = 0; i < maxDynaReposQuantity; i++) {
+for (var i = 0; i < maxDynaReposQuantity; i++) {
   addRepo(configurable.get('REPO_' + i + '_NAME') || i + 'th', 'REPO_' + i + '_URL');
 }
 
 
 configurable.get('REPOS', function (value) {
+  'use strict';
   var chunks = value.split(';');
   chunks.forEach(function (chunk) {
     var val = chunk,
-      nameRegex = /(https:\/\/api\.github\.com\/repos\/)?(.*)/;
-    name = nameRegex.exec(val)[2],
+      nameRegex = /(https:\/\/api\.github\.com\/repos\/)?(.*)/,
+      name = nameRegex.exec(val)[2],
       key = name.toLowerCase().replace('/', '_');
 
     var gitHubApiPrefix = 'https://api.github.com/repos/';
