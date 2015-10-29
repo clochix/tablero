@@ -6,8 +6,8 @@
   <title>Tablero</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" href="/bower_components/tipsy/src/stylesheets/tipsy.css">
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="bower_components/tipsy/src/stylesheets/tipsy.css">
+  <link rel="stylesheet" href="css/main.css">
   <!--
   <link href='//fonts.googleapis.com/css?family=Teko:300,400,500,600,700|Anton' rel='stylesheet' type='text/css'>
   -->
@@ -15,7 +15,7 @@
 
 <body role="document">
   <header>
-    <a href="/" title="Tablero" class="logo"><h1>TABLERO</h1></a>
+    <a href="#" title="Tablero" class="logo"><h1>TABLERO</h1></a>
     <button id="open_modal_issue" class="btn btn-success btn-xs right" data-toggle="modal" data-target="#myModal">
       + CREATE ISSUE
     </button>
@@ -146,11 +146,6 @@
         </div>
         <div class="modal-body">
           <p>Enter the application configuration</p>
-          <pre>
-  Application Name: tablero
-  Homepage URL: http://localhost
-  Authorization callback URL: http://localhost:3000/request_auth_token
-          </pre>
           </p>
           <p>
               <label for="clientId">Client ID</label><input data-order="0" value="" type="text" id="clientId">
@@ -163,6 +158,11 @@
             <a href="javascript:void(0);" id="addRepo"> + Repository </a>
           </p>
           <p>To get client ID and parameter, you need to register <em>Tablero</em> as a <a href="https://github.com/settings/applications/new" target="_blank">new OAuth application</a> with the following configuration:<br>
+          <pre>
+  Application Name: tablero
+  Homepage URL: http://localhost
+  Authorization callback URL: http://localhost:3000/request_auth_token
+          </pre>
           <button type="button" class="btn btn-xs" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-xs" id="saveConfigChanges">Save</button>
         </div>
@@ -189,10 +189,10 @@
 
 
   <!--[if lt IE 9]>
-      <script src="/bower_components/es5-shim/es5-shim.js"></script>
-      <script src="/bower_components/es5-shim/es5-sham.js"></script>
+      <script src="bower_components/es5-shim/es5-shim.js"></script>
+      <script src="bower_components/es5-shim/es5-sham.js"></script>
       <![endif]-->
-  <script src="/bower_components/requirejs/require.js" data-main="dist/main"></script>
+  <script src="bower_components/requirejs/require.js" data-main="dist/main"></script>
 
   <!-- Google Analytics -->
   <!--

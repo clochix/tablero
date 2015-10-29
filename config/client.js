@@ -43,6 +43,6 @@ configurable.get('REPOS', function (value) {
 module.exports = {
   repos: repos,
   labels: labels,
-  clientId: configurable.get('PX_CLIENT_ID') || 'https://github.com/login/oauth',
+  clientId: configurable.get('PX_CLIENT_ID'),
   clientSecret: configurable.get('PX_CLIENT_SECRET')
 };

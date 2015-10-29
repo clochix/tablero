@@ -93,8 +93,8 @@ define([
         this.changeConfigEvents();
         this.addRepoEvent();
         this.saveConfigChanges();
-        this.$node.find('#clientId')[0].value = conf.clientId;
-        this.$node.find('#clientSecret')[0].value = conf.clientSecret;
+        this.$node.find('#clientId')[0].value = conf.clientId || '';
+        this.$node.find('#clientSecret')[0].value = conf.clientSecret || '';
         this.$node.find(this.attr.reposContainerSelector).html('');
         _.each(conf.repos, function (repo) {
           var repoInput = that.renderRepoInput(repo);
