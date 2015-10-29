@@ -20,6 +20,7 @@
     <a id="export_csv" class="btn btn-success btn-xs right" href="javascript:void(0)">EXPORT TO CSV </a>
     <a id="changeAccess" class="btn btn-success btn-xs right" href="javascript:void(0)">CHANGE ACCESS</a>
     <a id="changeColumns" class="btn btn-success btn-xs right" href="javascript:void(0)">COLUMNS</a>
+    <a id="changeConfig" class="btn btn-success btn-xs right" href="javascript:void(0)">CONFIG</a>
     <div id="filters" class="filter-container right">
     </div>
   </header>
@@ -129,6 +130,39 @@
           </p>
           <button type="button" class="btn btn-xs" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-xs" id="saveColumnsChanges">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal with configuration -->
+  <div class="modal fade" id="configModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Tablero Config</h4>
+        </div>
+        <div class="modal-body">
+          <p>Enter the application configuration</p>
+          <pre>
+  Application Name: tablero
+  Homepage URL: http://localhost
+  Authorization callback URL: http://localhost:3000/request_auth_token
+          </pre>
+          </p>
+          <p>
+              <label for="clientId">Client ID</label><input data-order="0" value="" type="text" id="clientId">
+          </p>
+          <p>
+              <label for="clientSecret">Client Secret</label><input data-order="0" value="" type="text" id="clientSecret">
+          </p>
+          <ul class="columns-container"></ul>
+          <p>
+            <a href="javascript:void(0);" id="addRepo"> + Repository </a>
+          </p>
+          <p>To get client ID and parameter, you need to register <em>Tablero</em> as a <a href="https://github.com/settings/applications/new" target="_blank">new OAuth application</a> with the following configuration:<br>
+          <button type="button" class="btn btn-xs" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-xs" id="saveConfigChanges">Save</button>
         </div>
       </div>
     </div>

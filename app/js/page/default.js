@@ -23,7 +23,9 @@ define(
     'component/ui/permissions_gateway',
     'component/mixins/with_auth_token_from_hash',
     'component/ui/columns_modal',
+    'component/ui/config_modal',
     'component/data/columns_manager',
+    'component/data/config_manager',
     'component/ui/columns_render'
   ],
   function (githubUser,
@@ -34,17 +36,20 @@ define(
     permissionsGateway,
     authToken,
     columnsModal,
+    configModal,
     columnsManager,
+    configManager,
     columnsRender) {
     'use strict';
 
     return initialize;
 
-    function initialize() {
+    function initialize(config) {
       issuesFilter.attachTo($('#filters'));
       newIssue.attachTo('#myModal');
       permissionsGateway.attachTo('#permissionsGateway');
       columnsModal.attachTo('#columnsModal');
+      configModal.attachTo('#configModal');
 
       $.blockUI.defaults.message = '<h2 id="loading" class="loading">Please wait...</h2>';
       $.blockUI.defaults.ignoreIfBlocked = true;
@@ -54,6 +59,7 @@ define(
       issuesExporter.attachTo(document);
       prioritizationManager.attachTo(document);
       columnsManager.attachTo(document);
+      configManager.attachTo(document);
 
       columnsRender.attachTo(document);
 
@@ -66,7 +72,12 @@ define(
         $('.backlog-sidebar').toggle('slide');
       });
 
-      $(document).trigger('ui:needs:columns');
+      if (config.getConfig().clientSecret) {
+        $(document).trigger('ui:needs:columns');
+      } else {
+        window.alert('Please configure application first');
+        $(document).trigger('ui:show:configModal');
+      }
 
       $(document).on('ui:show:messageFailConnection', function (event) {
         $.unblockUI();

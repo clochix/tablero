@@ -6,8 +6,7 @@ var path = require('path');
 var app = express();
 var cookieParser = require('cookie-parser');
 var configurable = require('./lib/configurable');
-var _ = require('underscore');
-
+var fs = require('fs');
 
 var configServer = require('./config/server.js');
 var configClient = require('./config/client.js');
@@ -30,6 +29,23 @@ app.use(cookieParser());
 
 app.get('/config', function(req, res) {
   res.send(configClient);
+});
+
+// Save configuration into config.json
+app.post('/config', function(req, res) {
+  'use strict';
+  var data = {
+    'PX_OAUTH_URL' : 'https://github.com/login/oauth',
+    'REPOS' : req.body.repos.join(';'),
+    'PX_CLIENT_SECRET' : req.body.clientSecret,
+    'PX_CLIENT_ID' : req.body.clientId
+  };
+  configurable.set('REPOS', req.body.repos.join(';'));
+  configurable.set('PX_CLIENT_SECRET', req.body.clientSecret);
+  configurable.set('PX_CLIENT_ID', req.body.clientId);
+  fs.writeFile('config.json', JSON.stringify(data, null, 2), function (err) {
+    res.send({res: err ? 'ko' : 'ok'});
+  });
 });
 
 app.get('/request_code', function(req, res) {

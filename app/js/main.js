@@ -42,7 +42,7 @@ require(
     compose.mixin(registry, [advice.withAdvice]);
 
     require(['page/default', 'config/config_bootstrap'], function (initializeDefault, config) {
-      initializeDefault();
+      initializeDefault(config);
     });
   }
 );
