@@ -1391,6 +1391,9 @@ header {
   width: 100%;
   white-space: nowrap; }
 
+.container.loading {
+  background: url("../img/ajax-loader.gif") center no-repeat; }
+
 input.missing {
   border: 1px red solid !important; }
   input.missing:after {

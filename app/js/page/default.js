@@ -72,6 +72,8 @@ define(
         $('.backlog-sidebar').toggle('slide');
       });
 
+      $('.container').toggleClass('loading');
+
       if (config.getConfig().clientSecret) {
         $(document).trigger('ui:needs:columns');
       } else {
