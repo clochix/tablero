@@ -13,7 +13,7 @@ define([],
       return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
     };
 
-    $.getJSON('/config', function (data) {
+    $.getJSON('config', function (data) {
       config = data || {
         repos: [],
         labels: []
