@@ -1,14 +1,15 @@
 define([],
   function () {
+    'use strict';
 
     var config = {
-      repos: [],
+      repos: {},
       labels: []
     };
 
 
     var getParameterByName = function (name) {
-      var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+      var match = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
       return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
     };
 
@@ -29,15 +30,18 @@ define([],
         return config;
       },
       getRepos: function () {
-        return config.repos
+        return config.repos;
       },
       getReposNames: function () {
         return Object.keys(config.repos);
       },
       getLabels: function () {
         return config.labels;
+      },
+      set: function (key, value) {
+        config[key] = value;
       }
-    }
+    };
 
   }
 );
