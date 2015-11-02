@@ -43,7 +43,8 @@ define([
       this.saveConfig = function () {
         var reposContainer = this.$node.find(this.attr.reposContainerSelector),
             data = {},
-            repos = _.chain(reposContainer.find('input')).
+            reposObject = {},
+            reposArray = _.chain(reposContainer.find('input')).
         filter(function (input) {
           return !_.isEmpty(input.value);
         }).
@@ -56,10 +57,11 @@ define([
         data = {
           clientId: this.$node.find('#clientId')[0].value,
           clientSecret: this.$node.find('#clientSecret')[0].value,
-          repos: repos
+          repos: reposArray
         };
         config.set('clientId', data.clientId);
         config.set('clientSecret', data.clientSecret);
+        config.set('repos', data.repos);
         $(document).trigger('data:store:config', data);
         $(document).trigger('ui:needs:columns');
         this.$node.modal('hide');

@@ -15,7 +15,7 @@ define([],
 
     $.getJSON('config', function (data) {
       config = data || {
-        repos: [],
+        repos: {},
         labels: []
       };
 
