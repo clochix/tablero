@@ -7,6 +7,7 @@ var app = express();
 var cookieParser = require('cookie-parser');
 var configurable = require('./lib/configurable');
 var fs = require('fs');
+var basePath = process.env.HOME || '.';
 
 var configServer = require('./config/server.js');
 var configClient = require('./config/client.js');
@@ -95,7 +96,7 @@ app.post('/config', function(req, res) {
     configClient.repos[key] = gitHubApiPrefix + name;
     configClient.labels[key] = name;
   });
-  fs.writeFile('config.json', JSON.stringify(data, null, 2), function (err) {
+  fs.writeFile(path.join(basePath, 'config.json'), JSON.stringify(data, null, 2), function (err) {
     res.send({res: err ? 'ko' : 'ok'});
   });
 });
@@ -146,7 +147,7 @@ if (configServer.redisUrl) {
     dbOptions.client.auth(redisUrl.auth.split(':')[1]);
   }
 } else {
-  dbOptions.client = new JsonDB('./database.json');
+  dbOptions.client = new JsonDB(path.join(basePath, './database.json'));
 }
 require('./lib/priorization')(app, dbOptions);
 require('./lib/columns')(app, dbOptions);
