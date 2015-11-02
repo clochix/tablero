@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*globals _: true */
 define([
   'flight/lib/component',
   'with-request'
   ], function (defineComponent, withRequest) {
+    'use strict';
   return defineComponent(columnsManager, withRequest);
 
   function columnsManager() {
@@ -40,7 +42,7 @@ define([
         method: 'GET',
         url: 'columns',
       }).done(function (data) {
-        if (_.isEmpty(data)) {
+        if (_.isEmpty(data) || _.isEmpty(data.columns)) {
           data = {
             columns: defaultColumns
           };
@@ -54,12 +56,12 @@ define([
         url: 'columns',
         data: JSON.stringify(columns),
         contentType: 'application/json'
-      })
+      });
     };
 
     this.after('initialize', function () {
       this.on('data:retrieve:columns', this.retrieve);
       this.on('data:store:columns', this.store);
     });
-  };
+  }
 });
