@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*global _: true*/
 define([
   'flight/lib/component',
   'component/templates/repo_input_template',
@@ -47,7 +48,9 @@ define([
           return !_.isEmpty(input.value);
         }).
         map(function (input, index) {
-          return input.value;
+          // return only the owner and repository name
+          var url = input.value.replace(/\/$/, '').split('/');
+          return url[url.length - 2] + '/' + url[url.length - 1];
         }).
         value();
         data = {

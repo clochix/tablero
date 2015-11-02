@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* globals Hogan: true */
 define([], function (template, compiler) {
   'use strict';
   return repoInputTemplate;
@@ -27,7 +28,7 @@ define([], function (template, compiler) {
     this.before('initialize', function () {
       this.template = Hogan.compile(
         '<li>' +
-        '<input type="text" value="{{value}}">' +
+        '<input type="text" value="{{value}}" placeholder="owner/repository">' +
         '<a href="#" class="remove-repo">Remove</a>' +
         '</li>'
       );
