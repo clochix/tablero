@@ -91,5 +91,14 @@ define(
 
         window.location = '/?access=repo#' + token;
       }.bind(this));
+
+      // Message is sent by Github login popup
+      window.addEventListener('message', function (event) {
+        var code = event.data;
+        $.getJSON('request_auth_token?code=' + code, function (res) {
+          config.set('token', res.token);
+          $(document).trigger('ui:needs:columns');
+        });
+      });
     }
   });

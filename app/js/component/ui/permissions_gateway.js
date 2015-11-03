@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 define([
-  'flight/lib/component'
+  'flight/lib/component',
+  'config/config_bootstrap',
+  'jquery-cookie/jquery.cookie'
   ],
-  function (defineComponent) {
+  function (defineComponent, config, cookie) {
     'use strict';
     return defineComponent(permissionsGateway);
 
@@ -27,8 +29,10 @@ define([
       });
 
       this.showRepository = function (repository) {
-        console.log('pedindo permissao nos repositorios "' + repository + '"');
-        window.location.replace('/request_code?access=' + (repository || ''));
+        var access = repository || $.cookie('access') || 'public_repo';
+        $.cookie('access', access, { expires: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)) } );
+        var authorizeUrl = 'https://github.com/login/oauth/authorize?client_id=' + config.get('clientId') + '&scope=' + access;
+        window.open(authorizeUrl);
       };
 
       this.showPublic = function () {

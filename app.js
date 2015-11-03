@@ -101,16 +101,6 @@ app.post('/config', function(req, res) {
   });
 });
 
-app.get('/request_code', function(req, res) {
-  'use strict';
-  var authorizeUrl = configServer.oauthUrl + '/authorize?client_id=' + configServer.clientId;
-
-  var access = req.query.access || req.cookies.access || 'public_repo';
-
-  res.cookie('access', access, { expires: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)) } );
-  res.redirect(authorizeUrl + '&scope=' + access);
-});
-
 app.get('/request_auth_token', function(req, res) {
   'use strict';
   var getAuthTokenUrl = configServer.oauthUrl + '/access_token?' +
@@ -129,7 +119,7 @@ app.get('/request_auth_token', function(req, res) {
   var fakeUrl = 'http://fake.uri/?' + xhr.responseText;
   var repositoryAccess = url.parse(fakeUrl, true).query.scope;
 
-  res.redirect('/?access=' + repositoryAccess + '#' + url.parse(fakeUrl, true).query.access_token);
+  res.send({token: url.parse(fakeUrl, true).query.access_token});
 });
 
 var dbOptions = {};

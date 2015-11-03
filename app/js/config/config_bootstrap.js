@@ -38,6 +38,9 @@ define([],
       getLabels: function () {
         return config.labels;
       },
+      get: function (key) {
+        return config[key];
+      },
       set: function (key, value) {
         config[key] = value;
       }

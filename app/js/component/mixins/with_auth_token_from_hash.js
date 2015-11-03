@@ -1,9 +1,12 @@
-define([],
-  function () {
+define([
+  'config/config_bootstrap'
+  ],
+  function (config) {
+    'use strict';
     return function () {
       this.getCurrentAuthToken = function () {
-        return window.location.hash.slice(1);
+        return config.get('token');
       };
-    }
+    };
   }
 );
