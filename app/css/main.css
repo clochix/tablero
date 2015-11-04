@@ -1412,7 +1412,7 @@ div.required-message {
   font-style: italic; }
 
 header {
-  background: url('/img/back.png');
+  background: url('../img/back.png');
   height: 70px; }
   header .logo {
     padding: 1em;
@@ -1924,7 +1924,7 @@ hr {
     background: #f9f9f9;
     padding: 10px; }
   .issue:active {
-    cursor: url("/img/closedhand.cur"), default !important;
+    cursor: url("../img/closedhand.cur"), default !important;
     transform: rotate(4deg); }
   .issue.color0 .issue-number {
     background-color: #ef689e; }
