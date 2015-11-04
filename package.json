@@ -63,5 +63,6 @@
     "redis": "^0.12.1",
     "underscore": "^1.7.0",
     "xmlhttprequest": "^1.6.0"
-  }
+  },
+  "icon-path": "icon.png"
 }
