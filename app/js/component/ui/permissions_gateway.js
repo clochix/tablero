@@ -31,8 +31,13 @@ define([
       this.showRepository = function (repository) {
         var access = repository || $.cookie('access') || 'public_repo';
         $.cookie('access', access, { expires: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)) } );
-        var authorizeUrl = 'https://github.com/login/oauth/authorize?client_id=' + config.get('clientId') + '&scope=' + access;
-        window.open(authorizeUrl);
+        if ($.cookie('token')) {
+          config.set('token', $.cookie('token'));
+          $(document).trigger('ui:needs:columns');
+        } else {
+          var authorizeUrl = 'https://github.com/login/oauth/authorize?client_id=' + config.get('clientId') + '&scope=' + access;
+          window.open(authorizeUrl);
+        }
       };
 
       this.showPublic = function () {

@@ -101,6 +101,7 @@ define(
         var code = event.data;
         $.getJSON('request_auth_token?code=' + code, function (res) {
           config.set('token', res.token);
+          $.cookie('token', res.token, { expires: new Date(Date.now() + 3600000) } );
           $(document).trigger('ui:needs:columns');
         });
       });
