@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*global _: true*/
 define(
   [
     'component/data/github_user',
@@ -74,11 +75,14 @@ define(
 
       $('.container').toggleClass('loading');
 
-      if (config.getConfig().clientSecret) {
-        $(document).trigger('ui:needs:columns');
-      } else {
+      if (!config.getConfig().clientSecret) {
         window.alert('Please configure application first');
         $(document).trigger('ui:show:configModal');
+      } else if (_.isEmpty(config.getRepos())) {
+        window.alert('Please add repository first');
+        $(document).trigger('ui:show:configModal');
+      } else {
+        $(document).trigger('ui:needs:columns');
       }
 
       $(document).on('ui:show:messageFailConnection', function (event) {

@@ -1,17 +1,19 @@
+/*global _: true */
 define(['config/config_bootstrap'],
   function (config) {
+    'use strict';
     return function () {
 
       this.fetchAllIssues = function (page) {
         var repos = config.getRepos();
 
         return _.object(_(repos).map(function (url, name) {
-          var private_repo = window.location.search.slice(14) == "repo";
+          var private_repo = window.location.search.slice(14) === 'repo';
           var request = $.getJSON(this.repoIssuesURL(url, page));
           var hasData = $.Deferred();
 
           var request2 = $.ajax({
-            dataType: "json",
+            dataType: 'json',
             url: this.repoIssuesURL(url, page),
             timeout: 2000
           }).
@@ -24,21 +26,21 @@ define(['config/config_bootstrap'],
               hasData.fail();
             } else {
               hasData.resolve();
-            };
+            }
           }.bind(this));
 
           return [name, hasData.promise()];
         }.bind(this)));
 
-      }
+      };
 
 
       this.defaultOptions = function () {
-        return "per_page=100&state=all&";
+        return 'per_page=100&state=all&';
       };
 
       this.getPageParam = function (page) {
-        return (isFinite(page)) ? "page=" + (page <= 0 ? 1 : page) + "&" : '';
+        return (isFinite(page)) ? 'page=' + (page <= 0 ? 1 : page) + '&' : '';
       };
 
       this.authRequest = function (url) {
@@ -46,20 +48,21 @@ define(['config/config_bootstrap'],
       };
 
       this.repoIssuesURL = function (repo, page) {
-        return this.authRequest(repo + '/issues?' + this.defaultOptions() + this.getPageParam(page));
+        var base = /api.github.com/.test(repo) ? '' : 'https://api.github.com/repos/';
+        return this.authRequest(base + repo + '/issues?' + this.defaultOptions() + this.getPageParam(page));
       };
 
       this.accessToken = function () {
-        return "access_token=" + this.getCurrentAuthToken();
+        return 'access_token=' + this.getCurrentAuthToken();
       };
 
       this.newIssueURL = function (projectName) {
         var repositoryURL = this.getURLFromProject(projectName);
-        return repositoryURL.replace("api.github.com/repos", "github.com") + "/issues/new";
+        return repositoryURL.replace('api.github.com/repos', 'github.com') + '/issues/new';
       };
 
       this.getURLFromProject = function (projectName) {
-        return config.getConfig().repos[projectName] || "not found";
+        return config.getConfig().repos[projectName] || 'not found';
       };
 
       this.getProjectIdentifier = function (projectUrl) {

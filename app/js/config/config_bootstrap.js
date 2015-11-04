@@ -4,7 +4,7 @@ define([],
 
     var config = {
       repos: {},
-      labels: []
+      labels: {}
     };
 
 
@@ -16,7 +16,7 @@ define([],
     $.getJSON('config', function (data) {
       config = data || {
         repos: {},
-        labels: []
+        labels: {}
       };
 
       if (getParameterByName('access') !== 'repo') {

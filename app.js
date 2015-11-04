@@ -87,6 +87,8 @@ app.post('/config', function(req, res) {
   configServer.clientId = req.body.clientId;
   configServer.clientSecret = req.body.clientSecret;
   //@FIXME set repo in configClient. Duplicated code
+  configClient.repos = {};
+  configClient.labels = {};
   req.body.repos.forEach(function (chunk) {
     var nameRegex = /(https:\/\/api\.github\.com\/repos\/)?(.*)/,
       name = nameRegex.exec(chunk)[2],

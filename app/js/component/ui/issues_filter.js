@@ -19,13 +19,14 @@ define([
   'config/config_bootstrap'
   ],
   function (defineComponent, issueFilterTemplate, config) {
-    var repoNames = config.getReposNames();
+    'use strict';
 
     return defineComponent(issuesFilter, issueFilterTemplate);
 
     function issuesFilter() {
       this.addFilters = function() {
-        repoNames.forEach(function (name, idx) {
+        this.$node.empty();
+        config.getReposNames().forEach(function (name, idx) {
           var renderedFilter = $(this.renderFilter({name: name, index: idx}));
           this.$node.append(renderedFilter);
           renderedFilter.change(function () {
@@ -36,10 +37,11 @@ define([
             }
           });
         }.bind(this));
-      }
+      };
 
       this.after('initialize', function () {
         this.addFilters();
+        this.on(document, 'data:store:config', this.addFilters.bind(this));
       });
     }
   }

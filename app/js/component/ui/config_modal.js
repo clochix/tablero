@@ -50,8 +50,10 @@ define([
         }).
         map(function (input, index) {
           // return only the owner and repository name
-          var url = input.value.replace(/\/$/, '').split('/');
-          return url[url.length - 2] + '/' + url[url.length - 1];
+          var url = input.value.replace(/\/$/, '').split('/'),
+              repo = url[url.length - 2] + '/' + url[url.length - 1];
+          reposObject[repo.toLowerCase().replace('/', '_')] = repo;
+          return repo;
         }).
         value();
         data = {
@@ -61,7 +63,8 @@ define([
         };
         config.set('clientId', data.clientId);
         config.set('clientSecret', data.clientSecret);
-        config.set('repos', data.repos);
+        config.set('repos', reposObject);
+        config.set('labels', reposObject);
         $(document).trigger('data:store:config', data);
         $(document).trigger('ui:needs:columns');
         this.$node.modal('hide');
@@ -110,6 +113,9 @@ define([
           var repoInput = that.renderRepoInput(repo);
           this.append(repoInput);
         }, this.$node.find(this.attr.reposContainerSelector));
+        if (Object.keys(conf.repos).length === 0) {
+          this.addNewRepo();
+        }
 
       };
 

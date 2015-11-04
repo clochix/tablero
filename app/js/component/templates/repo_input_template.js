@@ -21,7 +21,7 @@ define([], function (template, compiler) {
   function repoInputTemplate() {
     this.renderRepoInput = function (value) {
       return this.template.render({
-        value: value
+        value: value.replace('https://api.github.com/repos/', '')
       });
     };
 
