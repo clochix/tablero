@@ -20,6 +20,7 @@ define([
     'component/templates/popover_template'
 ],
   function (defineComponent, withAuthTokeFromHash, repositoriesURLs, withPopoverTemplate) {
+    "use strict";
     return defineComponent(githubIssues, withAuthTokeFromHash, repositoriesURLs, withPopoverTemplate);
 
     function githubIssues() {
@@ -46,7 +47,7 @@ define([
             response.projectName = data.projectName;
             this.trigger("ui:add:issue", {
               "issue": response
-            })
+            });
           }.bind(this)
         });
 
@@ -78,7 +79,7 @@ define([
       this.getIssuesFromProjects = function (projects) {
         var allIssues = [];
         _.filter(projects, function (project) {
-          return project.issues
+          return project.issues;
         }).
         forEach(function (project, index) {
           var issuesArrayJson = project.issues || [];
@@ -135,7 +136,7 @@ define([
 
           this.attr.issues = this.attr.issues.concat(issuesFromProjects);
 
-          if (data.page == 1) {
+          if (data.page === 1) {
             this.trigger('data:issues:clearExportCsvLink');
           }
 
@@ -156,7 +157,7 @@ define([
       this.assignMyselfToIssue = function (ev, assignData) {
 
         var user, issue, url;
-        if (assignData != undefined) {
+        if (assignData !== undefined) {
           user = assignData.user;
           issue = assignData.issue;
         }
@@ -176,7 +177,7 @@ define([
 
         if (!$('#' + issue.id + ' .empty-avatar').is(':visible')) {
           var userLogin = $('#' + issue.id + ' .assignee-avatar').attr('title');
-          if (userLogin == user.login) {
+          if (userLogin === user.login) {
             this.trigger(document, 'ui:unassign:user', assignData);
           } else {
             var issue_header = $('#' + issue.id + ' .issue-header');
@@ -236,7 +237,7 @@ define([
 
       this.unassignMyselfToIssue = function (ev, assignData) {
         var user, issue, url, currentData;
-        if (assignData != undefined) {
+        if (assignData !== undefined) {
           user = assignData.user;
           issue = assignData.issue;
         }
@@ -330,7 +331,7 @@ define([
               $('.panel-heading' + draggable + '-header .issues-count').text(' (' + $('.issue-track' + draggable + ' .issue').length + ')');
             });
 
-            if (label == "4 - Done") {
+            if (label === "4 - Done") {
               this.triggerRocketAnimation();
               $.ajax({
                 type: 'PATCH',
@@ -426,7 +427,7 @@ define([
       };
 
       this.getState = function (className) {
-        return className.search('done') != -1 ? 'closed' : 'open';
+        return className.search('done') !== -1 ? 'closed' : 'open';
       };
 
       this.changeNewIssueLink = function (event, projectName) {

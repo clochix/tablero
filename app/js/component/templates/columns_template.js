@@ -16,6 +16,7 @@
 define([
   'config/config_bootstrap'
   ], function (config) {
+  "use strict";
   return columnTemplate;
 
   function columnTemplate() {
@@ -40,5 +41,5 @@ define([
         '</div>'
       );
     });
-  };
+  }
 });

@@ -1,16 +1,17 @@
 define(
   ['flight/lib/component'],
   function (defineComponent) {
+    "use strict";
     return defineComponent(issue);
 
     function issue() {
       this.hideIssue = function (ev, data) {
-        if (this.attr.issue.repoName == data.repo) {
+        if (this.attr.issue.repoName === data.repo) {
           this.$node.hide();
         }
       };
       this.showIssue = function (ev, data) {
-        if (this.attr.issue.repoName == data.repo && this.attr.issue.state == "open" )  {
+        if (this.attr.issue.repoName === data.repo && this.attr.issue.state === "open" )  {
           this.$node.show();
         }
       };

@@ -47,7 +47,7 @@ define([
       this.cleanColumns();
 
       var columns = _.sortBy(data.columns, function (column) {
-        return Number(column['order']);
+        return Number(column.order);
       });
 
       var extraColumns = _.map(columns, function (column) {
@@ -55,7 +55,7 @@ define([
       });
       var extraClasses = _.map(columns, function (column) {
         return this.cleanLabel(column.column);
-      }, this);;
+      }, this);
 
       track.teardownAll();
 
@@ -77,7 +77,7 @@ define([
 
       var mountBoard = function () {
         $(document).trigger('ui:needs:issues', {});
-        $(document).trigger("ui:issue:createIssuesURL", $("#projects").val());
+        $(document).trigger('ui:issue:createIssuesURL', $('#projects').val());
         $(document).trigger('ui:draggable', {
           boardColumns: extraClasses
         });
@@ -90,7 +90,7 @@ define([
     this.renderColumn = function (extraClasses, extraColumns) {
       var that = this;
       return function (column) {
-        column.order = Number(column['order']) + 1;
+        column.order = Number(column.order) + 1;
         $(this.attr.columnsContainer).append(this.render(column));
 
         var trackType = column.order + ' - ' + column.column;
@@ -101,12 +101,12 @@ define([
           columns: extraClasses,
           extraAllowedTags: extraColumns
         });
-      }
+      };
     };
 
     this.after('initialize', function () {
       this.on('ui:needs:columns', this.askForColumns);
       this.on('data:got:columns', this.renderColumns);
     });
-  };
+  }
 });

@@ -2,7 +2,7 @@
   "node": true,
   "browser": true,
   "esnext": true,
-  "bitwise": true,
+  "bitwise": false,
   "curly": true,
   "eqeqeq": true,
   "immed": true,
@@ -10,7 +10,7 @@
   "latedef": false,
   "newcap": true,
   "noarg": true,
-  "quotmark": true,
+  "quotmark": false,
   "regexp": true,
   "smarttabs": true,
   "strict": true,
@@ -32,6 +32,7 @@
     "setupComponent"
   ],
   "globals": {
-    "_": false
+    "Hogan": true,
+    "_": true
   }
 }

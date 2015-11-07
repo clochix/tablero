@@ -15,6 +15,7 @@
  */
 define(['config/config_bootstrap'],
   function (config) {
+    "use strict";
     return issueFilterTemplate;
 
     function issueFilterTemplate() {
@@ -26,7 +27,7 @@ define(['config/config_bootstrap'],
 
       this.truncate = function (name, max) {
         if (name.length > max) {
-          return name.substring(0, max) + '...'
+          return name.substring(0, max) + '...';
         }
         return name;
       };

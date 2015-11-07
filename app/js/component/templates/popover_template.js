@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 define([], function (template, compiler) {
+  "use strict";
   return popoverTemplate;
 
   function popoverTemplate() {
     this.popover = function (popover) {
       return this.template.render(popover);
-    }
+    };
 
     this.before('initialize', function () {
       this.template = Hogan.compile(

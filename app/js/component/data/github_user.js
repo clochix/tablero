@@ -19,6 +19,7 @@ define([
   'jquery-cookie/jquery.cookie'
   ],
   function (defineComponent, withAuthTokeFromHash) {
+    "use strict";
     return defineComponent(githubUser, withAuthTokeFromHash);
 
     function githubUser() {
@@ -37,7 +38,7 @@ define([
             access_token: token
           }, function (userData, textStatus, request) {
             var newData = _.clone(previousData.data);
-            if (newData != undefined) {
+            if (newData !== undefined) {
               newData.user = userData;
             }
 

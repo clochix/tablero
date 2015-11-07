@@ -14,7 +14,7 @@ define([],
 
     $.getJSON('config', function (data) {
       config = data || {
-        repos: {},
+        repos: {}
       };
 
       if (getParameterByName('access') !== 'repo') {

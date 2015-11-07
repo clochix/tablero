@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 define([], function (template, compiler) {
+  "use strict";
   return columnInputTemplate;
 
   function columnInputTemplate() {
@@ -22,7 +23,7 @@ define([], function (template, compiler) {
         order: order,
         value: value
       });
-    }
+    };
 
     this.before('initialize', function () {
       this.template = Hogan.compile(

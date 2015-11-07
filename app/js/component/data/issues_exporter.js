@@ -31,10 +31,9 @@ define([
       var csvLink = '';
 
       this.storeColumns = function (ev, columns) {
-        var columns = columns.columns;
 
-        this.attr.customColumns = _.map(columns, function (column) {
-          return (parseInt(column['order']) + 1) + ' - ' + column['column'];
+        this.attr.customColumns = _.map(columns.columns, function (column) {
+          return (parseInt(column.order) + 1) + ' - ' + column.column;
         });
 
       };
@@ -119,10 +118,10 @@ define([
         } else {
           return "";
         }
-      };
+      }
 
       this.csvHeader = function () {
-        var header = ["Source", "Github ID", "Title", "Status", "Kanban State", "Tags", "Create at", "Closed at", "Lead Time"]
+        var header = ["Source", "Github ID", "Title", "Status", "Kanban State", "Tags", "Create at", "Closed at", "Lead Time"];
         _.each(this.attr.customColumns, function (label) {
           header.push(this.cleanLabel(label) + " at");
         }, this);
@@ -165,16 +164,16 @@ define([
       this.excludeNonLabeledEvents = function (mappedEvents) {
         return _.object(_.map(mappedEvents, function (issueEvents, key) {
           return [key, _.filter(issueEvents, function (event) {
-            return event.event == 'labeled';
-          })]
+            return event.event === 'labeled';
+          })];
         }));
       };
 
       this.getIssueEventsByLabel = function (labeledEvents, label) {
         return _.object(_.map(labeledEvents, function (issueEvents, key) {
           return [key, _.filter(issueEvents, function (event) {
-            return event.label.name == label;
-          })]
+            return event.label.name === label;
+          })];
         }));
       };
 
@@ -182,7 +181,7 @@ define([
         return _.object(_.map(labeledEvents, function (events, key) {
           return [key, _.first(_.sortBy(events, function (e) {
             return e.created_at;
-          }))]
+          }))];
         }));
       };
 
@@ -199,8 +198,7 @@ define([
       };
 
       this.addEventDateForIssues = function (issues, events) {
-        var groupedEventsByIssueId = {},
-          labeledEvents = {},
+        var labeledEvents = {},
           labelEvents = {},
           earlierstIssuesEvent = {},
           issuesWithEventDate = issues,
@@ -210,7 +208,7 @@ define([
         _.each(this.attr.customColumns, function (label) {
           labelEvents = this.getIssueEventsByLabel(labeledEvents, label);
           earlierstIssuesEvent = this.getEarliestIssueEvents(labelEvents);
-          issuesWithEventDate = this.mergeEventsWithIssues(issuesWithEventDate, earlierstIssuesEvent, this.cleanLabel(label) + "_at")
+          issuesWithEventDate = this.mergeEventsWithIssues(issuesWithEventDate, earlierstIssuesEvent, this.cleanLabel(label) + "_at");
         }, this);
 
         return issuesWithEventDate;

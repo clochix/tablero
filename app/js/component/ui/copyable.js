@@ -1,5 +1,6 @@
 define(['clipboard'],
   function (clipboard) {
+    "use strict";
     return copyable;
 
     function copyable() {
@@ -15,6 +16,6 @@ define(['clipboard'],
         }, function () {
           $(clipboard.hidden).text('').empty();
         });
-      }
+      };
     }
   });

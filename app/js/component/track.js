@@ -86,7 +86,7 @@
           this.attr.issuesCount += issues.length;
 
           issues.forEach(function (issue) {
-            if (issue.labels[0].name != "4 - Done") {
+            if (issue.labels[0].name !== "4 - Done") {
               var renderedIssue = this.renderIssue(issue);
               this.$node.prepend(renderedIssue);
               issueComponent.attachTo(renderedIssue, { issue: issue });
@@ -125,7 +125,7 @@
 
         this.renderIssue = function (issue) {
           var renderedIssue = $(this.render(issue));
-          if (renderedIssue.find('.assignee-avatar').attr('src') != "") {
+          if (renderedIssue.find('.assignee-avatar').attr('src') !== "") {
             renderedIssue.find('.assigns-myself').addClass('assigned');
             renderedIssue.find('.empty-avatar').hide();
             renderedIssue.find('.empty-avatar-label').hide();

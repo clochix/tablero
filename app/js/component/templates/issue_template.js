@@ -15,6 +15,7 @@
  */
 define(['config/config_bootstrap'],
   function (config) {
+    "use strict";
     return issueTemplate;
 
     function issueTemplate() {
@@ -33,25 +34,25 @@ define(['config/config_bootstrap'],
         }
 
         return clearedIssue;
-      }
+      };
 
       this.getLabels = function (labels, columnLabelFilter) {
         return _.filter(labels, columnLabelFilter);
-      }
+      };
 
       var columnLabelRegex = /\d+ - \w+/;
 
       this.removeColumnsLabels = function (labels) {
         return this.getLabels(labels, function (label) {
-          return !(label.name.match(columnLabelRegex))
-        })
-      }
+          return !(label.name.match(columnLabelRegex));
+        });
+      };
 
       this.getColumnLabel = function (labels) {
         return this.getLabels(labels, function (label) {
-          return (label.name.match(columnLabelRegex))
+          return (label.name.match(columnLabelRegex));
         });
-      }
+      };
 
       this.render = function (issue) {
         var renderedIssue;

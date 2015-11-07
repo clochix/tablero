@@ -25,7 +25,7 @@ define([
     function columnsModal() {
       this.defaultAttrs({
         columnsContainerSeletor: '.columns-container'
-      })
+      });
       this.showModal = function () {
         this.$node.modal({
           backdrop: 'static',
@@ -35,7 +35,7 @@ define([
 
       this.displayColumns = function (event, data) {
         var columns = _.sortBy(data.columns, function (column) {
-          return Number(column['order']);
+          return Number(column.order);
         });
 
         var that = this;
@@ -110,7 +110,7 @@ define([
       this.after('initialize', function () {
         this.setUp();
         this.on(document, 'ui:show:columnsModal', this.showModal.bind(this));
-        this.on(document, 'ui:show:columnsModal', this.bindRemoveColumnEvents)
+        this.on(document, 'ui:show:columnsModal', this.bindRemoveColumnEvents);
         this.on(document, 'data:got:columns', this.displayColumns.bind(this));
         this.on(document, 'ui:show:addColumn', this.addNewColumn.bind(this));
         this.on(document, 'ui:show:saveColumns', this.saveColumns.bind(this));
