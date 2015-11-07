@@ -42,12 +42,16 @@ define([
         method: 'GET',
         url: 'columns',
       }).done(function (data) {
-        if (_.isEmpty(data) || _.isEmpty(data.columns)) {
-          data = {
-            columns: defaultColumns
-          };
+        var columns = {};
+        if (_.isEmpty(data) || _.isEmpty(data.res)) {
+          columns.columns = defaultColumns;
+        } else {
+          columns.columns = [];
+          data.res.forEach(function (col) {
+            columns.columns.push({column: col[0], order: col[1]});
+          });
         }
-        that.trigger(document, 'data:got:columns', data);
+        that.trigger(document, 'data:got:columns', columns);
       });
     };
 

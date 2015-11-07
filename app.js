@@ -124,25 +124,25 @@ app.get('/request_auth_token', function(req, res) {
   res.send({token: url.parse(fakeUrl, true).query.access_token});
 });
 
-var dbOptions = {};
+var client;
 if (configServer.redisUrl) {
   var redisUrl = url.parse(configServer.redisUrl);
-  dbOptions.client = require('redis').createClient(redisUrl.port, redisUrl.hostname);
-  dbOptions.client.on('error', function (event) {
+  client = require('redis').createClient(redisUrl.port, redisUrl.hostname);
+  client.on('error', function (event) {
     'use strict';
-    if (dbOptions.client) {
+    if (client) {
       console.error('[ERROR] Could NOT connect to Redis server');
     }
-    dbOptions.client = undefined;
+    client = undefined;
   });
   if (redisUrl.auth) {
-    dbOptions.client.auth(redisUrl.auth.split(':')[1]);
+    client.auth(redisUrl.auth.split(':')[1]);
   }
 } else {
-  dbOptions.client = new JsonDB(path.join(basePath, './database.json'));
+  client = new JsonDB(path.join(basePath, './database.json'));
 }
-require('./lib/priorization')(app, dbOptions);
-require('./lib/columns')(app, dbOptions);
+require('./lib/priorization')(app, client);
+require('./lib/columns')(app, client);
 
 port = process.env.PORT || 3000;
 app.listen(port);

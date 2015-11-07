@@ -13,12 +13,14 @@
    * See the License for the specific language governing permissions and
    * limitations under the License.
    */
+  /* global _: true */
   define(
   ['flight/lib/component',
     'component/templates/issue_template',
     'component/ui/copyable',
     'component/ui/issue'],
     function (defineComponent, withIssueTemplate, copyable, issueComponent) {
+      'use strict';
       return defineComponent(track, withIssueTemplate, copyable);
 
       function track() {
@@ -72,7 +74,7 @@
         this.sortIssues = function () {
           var divList = $(".issue", this.node);
           divList.sort(function (a, b) {
-            return $(a).attr('data-priority') - $(b).attr('data-priority')
+            return $(a).attr('data-priority') - $(b).attr('data-priority');
           });
 
           //$(".issue-track", this.node).html(divList);
@@ -158,14 +160,14 @@
 
           _.each(UIissues, function (val) {
 
-            var objIssue = _.findWhere(issues.issues, {
+            var objIssue = _.findWhere(issues.res, {
               id: val.id
             });
-            if (objIssue)
+            if (objIssue) {
               val.dataset.priority = objIssue.priority;
-            else if (!val.dataset.priority)
+            } else if (!val.dataset.priority) {
               val.dataset.priority = val.id;
-
+            }
           });
 
           this.trigger(document, 'ui:issues:ended');

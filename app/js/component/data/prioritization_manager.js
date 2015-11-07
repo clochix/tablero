@@ -1,3 +1,4 @@
+/* global _: true */
 define([
  'flight/lib/component',
  'component/mixins/with_auth_token_from_hash',
@@ -50,7 +51,11 @@ define([
         this.get({
           url: '/priorities?project=' + value,
           success: function (data) {
-            this.trigger(document, 'data:got:priority', data);
+            var res = { res: [] };
+            data.res.forEach(function (prio) {
+              res.res.push({id: prio[0], priority: prio[1]});
+            });
+            this.trigger(document, 'data:got:priority', res);
           }
         });
 
