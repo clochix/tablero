@@ -18,7 +18,8 @@ define([
   'config/config_bootstrap'
   ],
   function (defineComponent, config) {
-    var labels = config.getLabels();
+    "use strict";
+    var labels = Object.keys(config.getRepos());
 
     return defineComponent(component);
 
@@ -39,8 +40,8 @@ define([
             'projectName': $("#projects").val()
           });
 
-          $("#myModal").modal('hide')
-          $("#myModal input, textarea").val('')
+          $("#myModal").modal('hide');
+          $("#myModal input, textarea").val('');
         });
 
         $("#projects").change(function () {

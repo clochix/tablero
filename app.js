@@ -88,7 +88,6 @@ app.post('/config', function(req, res) {
   configServer.clientSecret = req.body.clientSecret;
   //@FIXME set repo in configClient. Duplicated code
   configClient.repos = {};
-  configClient.labels = {};
   req.body.repos.forEach(function (chunk) {
     var nameRegex = /(https:\/\/api\.github\.com\/repos\/)?(.*)/,
       name = nameRegex.exec(chunk)[2],
@@ -96,7 +95,6 @@ app.post('/config', function(req, res) {
 
     var gitHubApiPrefix = 'https://api.github.com/repos/';
     configClient.repos[key] = gitHubApiPrefix + name;
-    configClient.labels[key] = name;
   });
   fs.writeFile(path.join(basePath, 'config.json'), JSON.stringify(data, null, 2), function (err) {
     res.send({res: err ? 'ko' : 'ok'});

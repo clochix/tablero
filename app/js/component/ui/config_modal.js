@@ -64,7 +64,6 @@ define([
         config.set('clientId', data.clientId);
         config.set('clientSecret', data.clientSecret);
         config.set('repos', reposObject);
-        config.set('labels', reposObject);
         $(document).trigger('data:store:config', data);
         $(document).trigger('ui:needs:columns');
         this.$node.modal('hide');

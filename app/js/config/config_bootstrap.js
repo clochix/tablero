@@ -4,7 +4,6 @@ define([],
 
     var config = {
       repos: {},
-      labels: {}
     };
 
 
@@ -16,12 +15,10 @@ define([],
     $.getJSON('config', function (data) {
       config = data || {
         repos: {},
-        labels: {}
       };
 
       if (getParameterByName('access') !== 'repo') {
         delete config.repos['project-issues'];
-        delete config.labels['project-issues'];
       }
     });
 
@@ -34,9 +31,6 @@ define([],
       },
       getReposNames: function () {
         return Object.keys(config.repos);
-      },
-      getLabels: function () {
-        return config.labels;
       },
       get: function (key) {
         return config[key];

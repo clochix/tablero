@@ -1,5 +1,4 @@
 var repos = {};
-var labels = {};
 var configurable = require('../lib/configurable');
 
 configurable.setSilentMode(true);
@@ -35,11 +34,9 @@ configurable.get('REPOS', function (value) {
 
     var gitHubApiPrefix = 'https://api.github.com/repos/';
     repos[key] = gitHubApiPrefix + name;
-    labels[key] = name;
   });
 });
 
 module.exports = {
   repos: repos,
-  labels: labels
 };
