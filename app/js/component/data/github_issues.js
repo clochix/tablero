@@ -17,9 +17,10 @@ define([
     'flight/lib/component',
     'component/mixins/with_auth_token_from_hash',
     'component/mixins/repositories_urls',
+    'config/config_bootstrap',
     'component/templates/popover_template'
 ],
-  function (defineComponent, withAuthTokeFromHash, repositoriesURLs, withPopoverTemplate) {
+  function (defineComponent, withAuthTokeFromHash, repositoriesURLs, config, withPopoverTemplate) {
     "use strict";
     return defineComponent(githubIssues, withAuthTokeFromHash, repositoriesURLs, withPopoverTemplate);
 
@@ -34,16 +35,18 @@ define([
         var url, repositoryURL;
 
         if (data.projectName === 'local') {
-          var issue = {
+          var issue, user;
+          user = config.get('user');
+          issue = {
             id: 'local' + new Date().valueOf(),
             projectName: 'local',
             state: 'open',
             labels: [],
             assignee: {
-              login: '',
-              avatar_url: ''
+              login: user.login,
+              avatar_url: user.avatar_url
             },
-            html_url: '',
+            html_url: '#',
             title: data.issueTitle,
             body: data.issueBody
           };
@@ -198,6 +201,10 @@ define([
         if (!issue) {
           return;
         }
+        if (issue.projectName === 'local') {
+          console.warn('Not available on local issues');
+          return;
+        }
 
         if (!user) {
           this.trigger(document, 'ui:needs:githubUser', {
@@ -279,6 +286,10 @@ define([
           return;
         }
 
+        if (issue.projectName === 'local') {
+          return;
+        }
+
         if (!user) {
           this.trigger(document, 'ui:needs:githubUser', {
             data: assignData,
@@ -345,17 +356,19 @@ define([
           cancel: '.popover',
           update: this.updateDraggable.bind(this),
           receive: function (event, ui) {
-            var label, url, oldLabel, state;
+            var id, project, label, url, oldLabel, state;
 
             if (!this.getCurrentAuthToken()) {
               this.trigger(document, 'ui:needs:githubUser');
               return;
             }
 
-            url = this.getIssueUrlFromDraggable(ui);
-            label = this.parseLabel(event.target.id);
+            id       = ui.item[0].dataset.id;
+            project  = ui.item[0].dataset.projectName;
+            url      = ui.item[0].dataset.href;
+            label    = this.parseLabel(event.target.id);
             oldLabel = this.parseLabel(ui.sender[0].id);
-            state = this.getState(event.target.className);
+            state    = this.getState(event.target.className);
 
             $('.panel-heading.backlog-header .issues-count').text(' (' + $('.issue-track.backlog .issue').length + ')');
             $('.backlog-vertical-title .issues-count').text(' (' + $('.issue-track.backlog .issue').length + ')');
@@ -366,25 +379,47 @@ define([
 
             if (label === "4 - Done") {
               this.triggerRocketAnimation();
-              $.ajax({
-                type: 'PATCH',
-                url: url + this.getAccessTokenParam(),
-                data: JSON.stringify({
-                  state: "closed"
-                })
-              });
+              if (project === 'local') {
+                $.ajax({
+                  type: 'PATCH',
+                  url: 'issues?id=' + id,
+                  contentType : 'application/json',
+                  data: JSON.stringify({labels: [], state: 'closed'})
+                });
+              } else {
+                $.ajax({
+                  type: 'PATCH',
+                  url: url + this.getAccessTokenParam(),
+                  data: JSON.stringify({
+                    state: "closed"
+                  })
+                });
+                $.ajax({
+                  type: 'DELETE',
+                  url: url + "/labels/" + oldLabel + this.getAccessTokenParam()
+                });
+              }
             } else {
-              $.ajax({
-                type: 'POST',
-                url: url + "/labels" + this.getAccessTokenParam(),
-                data: JSON.stringify([label])
-              });
+              if (project === 'local') {
+                $.ajax({
+                  type: 'PATCH',
+                  url: 'issues?id=' + id,
+                  contentType : 'application/json',
+                  data: JSON.stringify({labels: [{url: "", name: label, color: ""}]})
+                });
+              } else {
+                $.ajax({
+                  type: 'POST',
+                  url: url + "/labels" + this.getAccessTokenParam(),
+                  data: JSON.stringify([label])
+                });
+                $.ajax({
+                  type: 'DELETE',
+                  url: url + "/labels/" + oldLabel + this.getAccessTokenParam()
+                });
+              }
             }
 
-            $.ajax({
-              type: 'DELETE',
-              url: url + "/labels/" + oldLabel + this.getAccessTokenParam()
-            });
           }.bind(this)
         }).disableSelection();
       };
@@ -449,10 +484,6 @@ define([
 
         fullLabel = label[0] + ' - ' + fullLabel;
         return fullLabel.trim();
-      };
-
-      this.getIssueUrlFromDraggable = function (ui) {
-        return ui.item[0].childNodes[0].childNodes[1].href.replace('github.com/', 'api.github.com/repos/');
       };
 
       this.getAccessTokenParam = function () {

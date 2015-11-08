@@ -27,17 +27,21 @@ configurable.get('REPOS', function (value) {
   'use strict';
   var chunks = value.split(';');
   chunks.forEach(function (chunk) {
-    var val = chunk,
-      nameRegex = /(https:\/\/api\.github\.com\/repos\/)?(.*)/,
-      name = nameRegex.exec(val)[2],
-      key = name.toLowerCase().replace('/', '_');
-
-    var gitHubApiPrefix = 'https://api.github.com/repos/';
-    repos[key] = gitHubApiPrefix + name;
-    if (typeof repos.local === 'undefined') {
+    if (chunk === 'local') {
       repos.local = 'local';
+    } else {
+      var val = chunk,
+        nameRegex = /(https:\/\/api\.github\.com\/repos\/)?(.*)/,
+        name = nameRegex.exec(val)[2],
+        key = name.toLowerCase().replace('/', '_');
+
+      var gitHubApiPrefix = 'https://api.github.com/repos/';
+      repos[key] = gitHubApiPrefix + name;
     }
   });
+  if (typeof repos.local === 'undefined') {
+    repos.local = 'local';
+  }
 });
 
 module.exports = {

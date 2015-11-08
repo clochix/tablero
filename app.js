@@ -89,12 +89,16 @@ app.post('/config', function(req, res) {
   //@FIXME set repo in configClient. Duplicated code
   configClient.repos = {};
   req.body.repos.forEach(function (chunk) {
-    var nameRegex = /(https:\/\/api\.github\.com\/repos\/)?(.*)/,
-      name = nameRegex.exec(chunk)[2],
-      key = name.toLowerCase().replace('/', '_');
+    if (key === 'local') {
+      var nameRegex = /(https:\/\/api\.github\.com\/repos\/)?(.*)/,
+        name = nameRegex.exec(chunk)[2],
+        key = name.toLowerCase().replace('/', '_');
 
-    var gitHubApiPrefix = 'https://api.github.com/repos/';
-    configClient.repos[key] = gitHubApiPrefix + name;
+      var gitHubApiPrefix = 'https://api.github.com/repos/';
+      configClient.repos[key] = gitHubApiPrefix + name;
+    } else {
+      configClient.repos.local = 'local';
+    }
   });
   fs.writeFile(path.join(basePath, 'config.json'), JSON.stringify(data, null, 2), function (err) {
     res.send({res: err ? 'ko' : 'ok'});

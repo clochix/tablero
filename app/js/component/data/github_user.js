@@ -16,9 +16,10 @@
 define([
    'flight/lib/component',
    'component/mixins/with_auth_token_from_hash',
-  'jquery-cookie/jquery.cookie'
+   'config/config_bootstrap',
+   'jquery-cookie/jquery.cookie'
   ],
-  function (defineComponent, withAuthTokeFromHash) {
+  function (defineComponent, withAuthTokeFromHash, config, cookie) {
     "use strict";
     return defineComponent(githubUser, withAuthTokeFromHash);
 
@@ -37,6 +38,7 @@ define([
           $.getJSON('https://api.github.com/user', {
             access_token: token
           }, function (userData, textStatus, request) {
+            config.set('user', userData);
             var newData = _.clone(previousData.data);
             if (newData !== undefined) {
               newData.user = userData;

@@ -67,7 +67,7 @@ define(['config/config_bootstrap'],
 
       this.before('initialize', function () {
         this.template = Hogan.compile(
-          '<div class="issue list-group-item {{repoName}} {{colorClass}}" id="{{id}}" data-priority="{{priority}}">' +
+          '<div class="issue list-group-item {{repoName}} {{colorClass}}" id="{{id}}" data-priority="{{priority}}" data-id="{{id}}" data-project-name="{{projectName}}" data-href="{{html_url}}">' +
           '<div class="issue-header">' +
           '<a class="assigns-myself">' +
           '<span class="empty-avatar">+</span>' +

@@ -49,7 +49,7 @@ define([
       _.each(projectIdentifiers.projects, function (value, key, list) {
 
         this.get({
-          url: '/priorities?project=' + value,
+          url: 'priorities?project=' + value,
           success: function (data) {
             var res = { res: [] };
             data.res.forEach(function (prio) {
