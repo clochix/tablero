@@ -32,26 +32,52 @@ define([
 
       this.createIssue = function (ev, data) {
         var url, repositoryURL;
-        repositoryURL = this.getURLFromProject(data.projectName);
-        url = this.repoIssuesURL(repositoryURL);
 
-        $.ajax({
-          type: 'POST',
-          url: url,
-          data: JSON.stringify({
-            'title': data.issueTitle,
-            'body': data.issueBody,
-            'labels': ["0 - Backlog"]
-          }),
-          success: function (response, status, xhr) {
-            response.projectName = data.projectName;
-            this.trigger("ui:add:issue", {
-              "issue": response
-            });
-          }.bind(this)
-        });
+        if (data.projectName === 'local') {
+          var issue = {
+            id: 'local' + new Date().valueOf(),
+            projectName: 'local',
+            state: 'open',
+            labels: [],
+            assignee: {
+              login: '',
+              avatar_url: ''
+            },
+            html_url: '',
+            title: data.issueTitle,
+            body: data.issueBody
+          };
+          $.ajax({
+            type: 'POST',
+            url: 'issues',
+            data: JSON.stringify(issue),
+            contentType: 'application/json',
+            success: function (response, status, xhr) {
+              this.trigger("ui:add:issue", {
+                "issue": issue
+              });
+            }.bind(this)
+          });
+        } else {
+          repositoryURL = this.getURLFromProject(data.projectName);
+          url = this.repoIssuesURL(repositoryURL);
 
-
+          $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify({
+              'title': data.issueTitle,
+              'body': data.issueBody,
+              'labels': ["0 - Backlog"]
+            }),
+            success: function (response, status, xhr) {
+              response.projectName = data.projectName;
+              this.trigger("ui:add:issue", {
+                "issue": response
+              });
+            }.bind(this)
+          });
+        }
       };
 
       this.addIssue = function (ev, data) {
@@ -126,30 +152,37 @@ define([
               'issues': issuesResults[idx]
             };
           });
+          $.getJSON('issues', function (data) {
 
-          var filteredProjects = this.filterProjectsByName(projects, data.projectName),
-            issuesFromProjects = this.getIssuesFromProjects(filteredProjects);
+            var local = [];
+            data.res.forEach(function (issue) {
+              local.push(issue[1]);
+            });
+            var filteredProjects = this.filterProjectsByName(projects, data.projectName),
+              issuesFromProjects = this.getIssuesFromProjects(filteredProjects),
+              allIssues = local.concat(issuesFromProjects);
 
-          this.trigger('data:issues:refreshed', {
-            issues: issuesFromProjects
-          });
+            this.trigger('data:issues:refreshed', {
+              issues: allIssues
+            });
 
-          this.attr.issues = this.attr.issues.concat(issuesFromProjects);
+            this.attr.issues = this.attr.issues.concat(allIssues);
 
-          if (data.page === 1) {
-            this.trigger('data:issues:clearExportCsvLink');
-          }
+            if (data.page === 1) {
+              this.trigger('data:issues:clearExportCsvLink');
+            }
 
-          if (issuesFromProjects.length > 0) {
-            this.trigger('ui:needs:issues', data);
-          } else {
-            var projectIdentifiers = {
-              projects: this.getAllProjectsIdentifiers(_.map(filteredProjects, function (proj) {
-                return proj.projectName;
-              }))
-            };
-            this.trigger('ui:needs:priority', projectIdentifiers);
-          }
+            if (issuesFromProjects.length > 0) {
+              this.trigger('ui:needs:issues', data);
+            } else {
+              var projectIdentifiers = {
+                projects: this.getAllProjectsIdentifiers(_.map(filteredProjects, function (proj) {
+                  return proj.projectName;
+                }))
+              };
+              this.trigger('ui:needs:priority', projectIdentifiers);
+            }
+          }.bind(this));
         }.bind(this));
 
       };

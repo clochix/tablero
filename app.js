@@ -141,6 +141,7 @@ if (configServer.redisUrl) {
 }
 require('./lib/priorization')(app, client);
 require('./lib/columns')(app, client);
+require('./lib/issues')(app, client);
 
 port = process.env.PORT || 3000;
 app.listen(port);

@@ -56,6 +56,8 @@ define([
           return repo;
         }).
         value();
+        reposArray.push('local');
+        reposObject.local = 'local';
         data = {
           clientId: this.$node.find('#clientId')[0].value,
           clientSecret: this.$node.find('#clientSecret')[0].value,
@@ -109,12 +111,12 @@ define([
         this.$node.find(this.attr.reposContainerSelector).html('');
         this.$node.find('#callbackUrl')[0].innerHTML = l.protocol + '//' + l.host + l.pathname.replace(/\/$/, '');
         _.each(conf.repos, function (repo) {
-          var repoInput = that.renderRepoInput(repo);
-          this.append(repoInput);
+          if (repo !== 'local') {
+            var repoInput = that.renderRepoInput(repo);
+            this.append(repoInput);
+          }
         }, this.$node.find(this.attr.reposContainerSelector));
-        if (Object.keys(conf.repos).length === 0) {
-          this.addNewRepo();
-        }
+        this.addNewRepo();
 
       };
 

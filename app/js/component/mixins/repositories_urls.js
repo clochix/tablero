@@ -5,7 +5,8 @@ define(['config/config_bootstrap'],
     return function () {
 
       this.fetchAllIssues = function (page) {
-        var repos = config.getRepos();
+        var repos = _.clone(config.getRepos());
+        delete repos.local;
 
         return _.object(_(repos).map(function (url, name) {
           var private_repo = window.location.search.slice(14) === 'repo';

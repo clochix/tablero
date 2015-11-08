@@ -34,9 +34,12 @@ configurable.get('REPOS', function (value) {
 
     var gitHubApiPrefix = 'https://api.github.com/repos/';
     repos[key] = gitHubApiPrefix + name;
+    if (typeof repos.local === 'undefined') {
+      repos.local = 'local';
+    }
   });
 });
 
 module.exports = {
-  repos: repos,
+  repos: repos
 };

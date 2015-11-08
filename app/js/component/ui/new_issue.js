@@ -62,9 +62,9 @@ define([
 
         var template = Hogan.compile('<option value="{{name}}">{{label}}</option>');
         $('#projects').empty();
-        _(labels).each(function (label, name) {
+        _(labels).each(function (label) {
           $("#projects").append(template.render({
-            name: name,
+            name: label,
             label: label
           }));
         }.bind(this));

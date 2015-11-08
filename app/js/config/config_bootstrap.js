@@ -3,7 +3,7 @@ define([],
     'use strict';
 
     var config = {
-      repos: {},
+      repos: {}
     };
 
 
@@ -14,7 +14,9 @@ define([],
 
     $.getJSON('config', function (data) {
       config = data || {
-        repos: {}
+        repos: {
+          local: 'local'
+        }
       };
 
       if (getParameterByName('access') !== 'repo') {
