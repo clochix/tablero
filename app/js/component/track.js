@@ -166,7 +166,7 @@
             if (objIssue) {
               val.dataset.priority = objIssue.priority;
             } else if (!val.dataset.priority) {
-              val.dataset.priority = val.id;
+              val.dataset.priority = val.id.replace(/[^\d]/g, '');
             }
           });
 
@@ -174,6 +174,7 @@
         };
 
         this.after('initialize', function () {
+          //@FIXME this is called multiple times
           this.on(document, 'data:issues:refreshed', this.displayIssues);
           this.on(document, 'data:issues:cleanCount', this.cleanCount);
           this.on(document, 'data:issues:issueMoved', this.moveIssue);

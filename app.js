@@ -10,7 +10,6 @@ var fs = require('fs');
 var basePath = process.env.APP_DATA || '/usr/local/var/cozy/tablero';
 
 var configServer = require('./config/server.js');
-var configClient = require('./config/client.js');
 
 var port;
 
@@ -67,9 +66,34 @@ app.use(cookieParser());
 
 app.get('/config', function(req, res) {
   'use strict';
-  configClient.clientId = configurable.get('PX_CLIENT_ID');
-  configClient.clientSecret = configurable.get('PX_CLIENT_SECRET');
-  res.send(configClient);
+  function loadRepos() {
+    var repos = {};
+    configurable.get('REPOS', function (value) {
+      var chunks = value.split(';');
+      chunks.forEach(function (chunk) {
+        if (chunk === 'local') {
+          repos.local = 'local';
+        } else {
+          var val = chunk,
+            nameRegex = /(https:\/\/api\.github\.com\/repos\/)?(.*)/,
+            name = nameRegex.exec(val)[2],
+            key = name.toLowerCase().replace('/', '_');
+
+          var gitHubApiPrefix = 'https://api.github.com/repos/';
+          repos[key] = gitHubApiPrefix + name;
+        }
+      });
+      if (typeof repos.local === 'undefined') {
+        repos.local = 'local';
+      }
+    });
+    return repos;
+  }
+  res.send({
+    clientId: configurable.get('PX_CLIENT_ID'),
+    clientSecret: configurable.get('PX_CLIENT_SECRET'),
+    repos: loadRepos()
+  });
 });
 
 // Save configuration into config.json
@@ -87,6 +111,7 @@ app.post('/config', function(req, res) {
   configServer.clientId = req.body.clientId;
   configServer.clientSecret = req.body.clientSecret;
   //@FIXME set repo in configClient. Duplicated code
+  /*
   configClient.repos = {};
   req.body.repos.forEach(function (chunk) {
     if (key === 'local') {
@@ -96,10 +121,10 @@ app.post('/config', function(req, res) {
 
       var gitHubApiPrefix = 'https://api.github.com/repos/';
       configClient.repos[key] = gitHubApiPrefix + name;
-    } else {
-      configClient.repos.local = 'local';
     }
   });
+  configClient.repos.local = 'local';
+  */
   fs.writeFile(path.join(basePath, 'config.json'), JSON.stringify(data, null, 2), function (err) {
     res.send({res: err ? 'ko' : 'ok'});
   });

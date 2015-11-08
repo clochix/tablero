@@ -29,10 +29,13 @@ define([
       });
 
       this.showRepository = function (repository) {
-        var access = repository || $.cookie('access') || 'public_repo';
+        var access = repository || $.cookie('access') || 'public_repo',
+            token  = $.cookie('token');
+        this.$node.modal('hide');
         $.cookie('access', access, { expires: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)) } );
-        if ($.cookie('token')) {
-          config.set('token', $.cookie('token'));
+        if (token) {
+          $.cookie('token', token, { expires: new Date(Date.now() + 3600000) } );
+          config.set('token', token);
           $(document).trigger('ui:needs:columns');
         } else {
           var authorizeUrl = 'https://github.com/login/oauth/authorize?client_id=' + config.get('clientId') + '&scope=' + access;
@@ -41,11 +44,11 @@ define([
       };
 
       this.showPublic = function () {
-        that.showRepository('public_repo');
+        this.showRepository('public_repo');
       };
 
       this.showPublicAndPrivate = function () {
-        that.showRepository('repo');
+        this.showRepository('repo');
       };
 
       this.showModal = function () {
@@ -61,18 +64,18 @@ define([
 
       this.changesSelectedAccess = function (event, selectedAccess) {
         this.showRepository(selectedAccess);
-      }.bind(this);
+      };
 
       this.setUp = function () {
-        $('#showPublicBtn').click(this.showPublic);
-        $('#showPublicAndPrivateBtn').click(this.showPublicAndPrivate);
-        $('#changeAccess').click(this.triggerPermissionModal);
+        $('#showPublicBtn').click(this.showPublic.bind(this));
+        $('#showPublicAndPrivateBtn').click(this.showPublicAndPrivate.bind(this));
+        $('#changeAccess').click(this.triggerPermissionModal.bind(this));
       };
 
       this.after('initialize', function () {
         this.setUp();
         this.on(document, 'ui:show:permissionsModal', this.showModal.bind(this));
-        this.on(document, 'ui:show:permissionSelected', this.changesSelectedAccess);
+        this.on(document, 'ui:show:permissionSelected', this.changesSelectedAccess.bind(this));
       });
     }
   });

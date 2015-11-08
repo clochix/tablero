@@ -46,6 +46,7 @@ define([
 
     this.loadPriority = function (event, projectIdentifiers) {
 
+      projectIdentifiers.projects.push('local');
       _.each(projectIdentifiers.projects, function (value, key, list) {
 
         this.get({

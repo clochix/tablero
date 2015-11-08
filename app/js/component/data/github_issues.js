@@ -155,10 +155,10 @@ define([
               'issues': issuesResults[idx]
             };
           });
-          $.getJSON('issues', function (data) {
+          $.getJSON('issues', function (localIssues) {
 
             var local = [];
-            data.res.forEach(function (issue) {
+            localIssues.res.forEach(function (issue) {
               local.push(issue[1]);
             });
             var filteredProjects = this.filterProjectsByName(projects, data.projectName),
@@ -365,7 +365,7 @@ define([
 
             id       = ui.item[0].dataset.id;
             project  = ui.item[0].dataset.projectName;
-            url      = ui.item[0].dataset.href;
+            url      = ui.item[0].dataset.href.replace('github.com/', 'api.github.com/repos/');
             label    = this.parseLabel(event.target.id);
             oldLabel = this.parseLabel(ui.sender[0].id);
             state    = this.getState(event.target.className);
@@ -465,10 +465,7 @@ define([
         if (element && element.id) {
           returnObject.id = element.id;
           returnObject.priority = element.dataset.priority;
-        }
-        var projectUrl = $(element).find('.issue-header a')[1];
-        if (projectUrl) {
-          returnObject.project = this.getProjectIdentifier(projectUrl.href) || '';
+          returnObject.project = element.dataset.projectName;
         }
         return returnObject;
       };
