@@ -16,6 +16,9 @@ define(
         }
       };
       this.after('initialize', function () {
+        this.$node.find('.issue-body').click(function () {
+          $(document).trigger('ui:needs:issue', this.attr.issue);
+        }.bind(this));
         this.on(document, 'ui:dontShowRepoIssues', this.hideIssue);
         this.on(document, 'ui:showRepoIssues', this.showIssue);
       });

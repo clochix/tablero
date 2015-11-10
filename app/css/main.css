@@ -1368,7 +1368,6 @@ header {
 .modal-footer button {
   float: left;
   border: none;
-  width: 80px;
   height: 30px;
   margin-right: 0.5em;
   border-radius: 2px;
@@ -1851,6 +1850,13 @@ hr {
 .columns-container li input {
   width: 80% !important;
   margin-right: 10px; }
+
+.shadow-box {
+  margin: 1em 0;
+  padding: 0.5em;
+  border: 1px solid #0FF;
+  border-radius: 0.5em;
+  box-shadow: 0.5em 0.5em rgba(127, 127, 127, 0.5); }
 
 .container {
   padding: 0.5em 0em 0em 0.5em; }

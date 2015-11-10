@@ -442,3 +442,10 @@ hr {
   width: 80% !important;
   margin-right: 10px;
 }
+.shadow-box {
+  margin: 1em 0;
+  padding: .5em;
+  border: 1px solid #0FF;
+  border-radius: .5em;
+  box-shadow: .5em .5em rgba(127, 127, 127, .5);
+}

@@ -42,13 +42,19 @@ define([
             projectName: 'local',
             state: 'open',
             labels: [],
+            user: {
+              login: user.login,
+              avatar_url: user.avatar_url
+            },
             assignee: {
               login: user.login,
               avatar_url: user.avatar_url
             },
             html_url: '#',
             title: data.issueTitle,
-            body: data.issueBody
+            body: data.issueBody,
+            created_at: new Date().toISOString(),
+            comments: []
           };
           $.ajax({
             type: 'POST',
@@ -513,9 +519,53 @@ define([
         this.attr.issues = [];
       };
 
+      this.fetchIssue = function(event, issue) {
+        if (issue.projectName !== 'local') {
+          $.getJSON(issue.comments_url, function (comments) {
+            issue.comments = comments;
+            this.trigger('data:got:issue', issue);
+          }.bind(this));
+        } else {
+          this.trigger('data:got:issue', issue);
+        }
+      };
+
+      this.createComment = function(event, data) {
+        if (data.issue.projectName === 'local') {
+          if (!Array.isArray(data.issue.comments)) {
+            data.issue.comments = [];
+          }
+          var comment = {
+            body: data.comment,
+            user: data.issue.user,
+            created_at: new Date().toISOString()
+          };
+          data.issue.comments.push(comment);
+          $.ajax({
+            type: 'POST',
+            url: 'issues',
+            data: JSON.stringify(data.issue),
+            contentType: 'application/json',
+            success: function (response, status, xhr) {
+              this.trigger('data:got:issue', data.issue);
+            }.bind(this)
+          });
+        } else {
+          $.ajax({
+            type: 'POST',
+            url: data.issue.comments_url + '?' + this.accessToken(),
+            data: JSON.stringify({body: data.comment}),
+            contentType: 'application/json',
+            success: function (response, status, xhr) {
+              this.trigger('ui:needs:issue', data.issue);
+            }.bind(this)
+          });
+        }
+      };
 
       this.after('initialize', function () {
         this.on('ui:needs:issues', this.fetchIssues);
+        this.on('ui:needs:issue', this.fetchIssue);
         this.on('ui:add:issue', this.addIssue);
         this.on('ui:create:issue', this.createIssue);
         this.on('ui:assigns:user', this.assignMyselfToIssue);
@@ -527,7 +577,7 @@ define([
         this.on('ui:blockUI', this.blockUI);
         this.on('ui:unblockUI', this.unblockUI);
         this.on('ui:clear:issue', this.clearIssues);
-
+        this.on('data:create:comment', this.createComment);
       });
     }
   }

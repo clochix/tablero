@@ -25,6 +25,7 @@ define(
     'component/mixins/with_auth_token_from_hash',
     'component/ui/columns_modal',
     'component/ui/config_modal',
+    'component/ui/issue_modal',
     'component/data/columns_manager',
     'component/data/config_manager',
     'component/ui/columns_render'
@@ -38,6 +39,7 @@ define(
     authToken,
     columnsModal,
     configModal,
+    issueModal,
     columnsManager,
     configManager,
     columnsRender) {
@@ -51,6 +53,7 @@ define(
       permissionsGateway.attachTo('#permissionsGateway');
       columnsModal.attachTo('#columnsModal');
       configModal.attachTo('#configModal');
+      issueModal.attachTo('#issueModal');
 
       $.blockUI.defaults.message = '<h2 id="loading" class="loading">Please wait...</h2>';
       $.blockUI.defaults.ignoreIfBlocked = true;

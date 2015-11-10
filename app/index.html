@@ -170,6 +170,23 @@
     </div>
   </div>
 
+  <!-- Modal with issue detail -->
+  <div class="modal fade" id="issueModal" tabindex="-1" role="dialog" aria-labelledby="issueModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="issueModalTitle"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-xs" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-xs" id="addComment">Add comment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal about error to get issues -->
 
   <div class="modal fade" id="failConnectionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display : none">
@@ -186,6 +203,25 @@
     </div>
   </div>
 
+  <div id="templates" style="display: none">
+    <div id="issueDetail">
+      <p>
+      Created on {{created_at}} by {{user.login}}
+      </p>
+      <div class="shadow-box">{{body}}</div>
+      <div class="comments">
+        {{#comments}}
+        <p>{{user.login}} on {{created_at}}</p>
+        <div class="shadow-box">
+        {{body}}
+        </div>
+        {{/comments}}
+      </div>
+      <div class="newComment">
+        <textarea></textarea>
+      </div>
+    </div>
+  </div>
 
 
   <!--[if lt IE 9]>
@@ -193,19 +229,6 @@
       <script src="bower_components/es5-shim/es5-sham.js"></script>
       <![endif]-->
   <script src="bower_components/requirejs/require.js" data-main="dist/main"></script>
-
-  <!-- Google Analytics -->
-  <!--
-        <script>
-(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-                                                        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-e.src='//www.google-analytics.com/analytics.js';
-r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-ga('create','');ga('send','pageview');
-        </script>
-        -->
-
   <div id="clipboard-container" style='position fixed; left: 0px;top: 0px;width: 0px;height: 0px; opacity: 0;'>
     <textarea id="clipboard" style="width: 1px; height: 1px;"></textarea>
   </div>
