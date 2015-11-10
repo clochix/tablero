@@ -138,23 +138,6 @@
           return renderedIssue;
         };
 
-        this.getIssues = function (event, eventCallback) {
-          var issues = $(".issue", this.$node);
-
-          var map = {
-            track: this.attr.trackType,
-            issues: _.map(issues, function (val) {
-              return {
-                id: val.id,
-                priority: val.dataset.priority
-              };
-            })
-          };
-
-
-          this.trigger(eventCallback.eventCallback, map);
-        };
-
         this.fillPriority = function (event, issues) {
           var UIissues = $('.issue', this.$node);
 
@@ -180,7 +163,6 @@
           this.on(document, 'data:issues:issueMoved', this.moveIssue);
           this.on(document, 'data:issue:priorityChanged', this.priorityChanged);
           this.on(document, 'ui:issues:ended', this.sortIssues);
-          this.on(document, 'data:needs:issues', this.getIssues);
           this.on(document, 'data:got:priority', this.fillPriority);
           this.on(this.$node, 'ui:issues:displayed', this.makeCopyable);
         });

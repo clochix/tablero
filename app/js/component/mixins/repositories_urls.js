@@ -10,7 +10,6 @@ define(['config/config_bootstrap'],
 
         return _.object(_(repos).map(function (url, name) {
           var private_repo = window.location.search.slice(14) === 'repo';
-          var request = $.getJSON(this.repoIssuesURL(url, page));
           var hasData = $.Deferred();
 
           var request2 = $.ajax({
@@ -37,7 +36,7 @@ define(['config/config_bootstrap'],
 
 
       this.defaultOptions = function () {
-        return 'per_page=100&state=all&';
+        return 'per_page=100&state=open&';
       };
 
       this.getPageParam = function (page) {

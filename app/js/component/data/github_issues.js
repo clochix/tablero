@@ -145,7 +145,22 @@ define([
 
         data.page = ('page' in data) ? (data.page + 1) : 1;
 
-        var issuesPromises = this.fetchAllIssues(data.page, this.attr.blockedRepos);
+        if (data.page === 1) {
+          this.trigger('data:issues:clearExportCsvLink');
+          $.getJSON('issues', function (localIssues) {
+
+            var local = [];
+            localIssues.res.forEach(function (issue) {
+              local.push(issue[1]);
+            });
+            this.attr.issues = this.attr.issues.concat(local);
+            this.trigger('data:issues:refreshed', {
+              issues: local
+            });
+          }.bind(this));
+        }
+
+        var issuesPromises = this.fetchAllIssues(data.page);
         var queries = _(issuesPromises).map(function (v, k) {
           return v;
         });
@@ -153,7 +168,6 @@ define([
           return k;
         });
         $.when.apply(this, queries).done(function () {
-          //var issuesResults = names.length > 1 ? arguments : [arguments];
           var issuesResults = arguments;
           var projects = _(names).map(function (name, idx) {
             return {
@@ -161,37 +175,26 @@ define([
               'issues': issuesResults[idx]
             };
           });
-          $.getJSON('issues', function (localIssues) {
+          var filteredProjects = this.filterProjectsByName(projects, data.projectName),
+            issuesFromProjects = this.getIssuesFromProjects(filteredProjects);
 
-            var local = [];
-            localIssues.res.forEach(function (issue) {
-              local.push(issue[1]);
-            });
-            var filteredProjects = this.filterProjectsByName(projects, data.projectName),
-              issuesFromProjects = this.getIssuesFromProjects(filteredProjects),
-              allIssues = local.concat(issuesFromProjects);
+          this.trigger('data:issues:refreshed', {
+            issues: issuesFromProjects
+          });
 
-            this.trigger('data:issues:refreshed', {
-              issues: allIssues
-            });
+          this.attr.issues = this.attr.issues.concat(issuesFromProjects);
 
-            this.attr.issues = this.attr.issues.concat(allIssues);
 
-            if (data.page === 1) {
-              this.trigger('data:issues:clearExportCsvLink');
-            }
-
-            if (issuesFromProjects.length > 0) {
-              this.trigger('ui:needs:issues', data);
-            } else {
-              var projectIdentifiers = {
-                projects: this.getAllProjectsIdentifiers(_.map(filteredProjects, function (proj) {
-                  return proj.projectName;
-                }))
-              };
-              this.trigger('ui:needs:priority', projectIdentifiers);
-            }
-          }.bind(this));
+          if (issuesFromProjects.length > 0) {
+            this.trigger('ui:needs:issues', data);
+          } else {
+            var projectIdentifiers = {
+              projects: this.getAllProjectsIdentifiers(_.map(filteredProjects, function (proj) {
+                return proj.projectName;
+              }))
+            };
+            this.trigger('ui:needs:priority', projectIdentifiers);
+          }
         }.bind(this));
 
       };
