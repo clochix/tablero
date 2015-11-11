@@ -25,7 +25,6 @@ define([
 
     function issueModal() {
       this.showModal = function (event, issue) {
-        console.log('showModal', issue);
         this.currentIssue = issue;
         this.node.querySelector('.modal-title').innerHTML = issue.title;
         this.node.querySelector('.modal-body').innerHTML = this.template.render(issue);
