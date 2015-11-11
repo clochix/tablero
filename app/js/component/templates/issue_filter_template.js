@@ -37,7 +37,7 @@ define(['config/config_bootstrap'],
         repo.title = repo.name;
         repo.colorClass = this.getRepoColor(repo.name);
         repo.isPrivate = _.contains(privateRepos, repo.name);
-        repo.name = this.truncate(repo.name, 10);
+        repo.name = repo.name.split('_').pop();
         var renderedIssue = this.template.render(repo);
         return renderedIssue;
       };

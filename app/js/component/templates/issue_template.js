@@ -77,9 +77,7 @@ define(['config/config_bootstrap'],
           '<a href="{{html_url}}" target="_blank"><span class="issue-number right">#{{number}}</span></a>' +
           '</div>' +
           '<div class="issue-body">' +
-          '<a class="title list-group-item-heading" href="{{html_url}}" target="_blank" data-toggle="tooltip" title="{{body}}" data-hint="Ctrl+C to Copy">' +
           '{{title}}' +
-          '</a>' +
           '</div>' +
           '<div class="labels">' +
           '{{#labelsName}}' +

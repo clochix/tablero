@@ -6,6 +6,11 @@ header {
     padding: 1.0em;
     padding-left: 1.25em;
     text-decoration: none;
+
+    h1 {
+      display: inline-block;
+      font-size: 2em;
+    }
   }
 
   button.btn-success, a.btn-success {
@@ -15,17 +20,16 @@ header {
   }
 
   .filter-container {
-    position: relative;
     font-size: 0.9em;
     margin: 1.5em auto;
-    width: 260px;
+    display: inline-block;
   }
 
   .filter-repo {
     display: inline-block;
-    min-width: 130px;
     color: white;
     cursor: pointer;
+    margin: 0 1em;
 
     label {
       cursor: pointer;
