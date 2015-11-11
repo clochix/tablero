@@ -534,36 +534,32 @@ define([
       };
 
       this.createComment = function(event, data) {
-        if (data.issue.projectName === 'local') {
-          if (!Array.isArray(data.issue.comments)) {
-            data.issue.comments = [];
-          }
-          var comment = {
-            body: data.comment,
-            user: data.issue.user,
-            created_at: new Date().toISOString()
-          };
-          data.issue.comments.push(comment);
-          $.ajax({
-            type: 'POST',
-            url: 'issues',
-            data: JSON.stringify(data.issue),
-            contentType: 'application/json',
-            success: function (response, status, xhr) {
-              this.trigger('data:got:issue', data.issue);
-            }.bind(this)
-          });
-        } else {
-          $.ajax({
-            type: 'POST',
-            url: data.issue.comments_url + '?' + this.accessToken(),
-            data: JSON.stringify({body: data.comment}),
-            contentType: 'application/json',
-            success: function (response, status, xhr) {
-              this.trigger('ui:needs:issue', data.issue);
-            }.bind(this)
-          });
+        var comment, url, body;
+        if (!Array.isArray(data.issue.comments)) {
+          data.issue.comments = [];
         }
+        comment = {
+          body: data.comment,
+          user: data.issue.user,
+          created_at: new Date().toISOString()
+        };
+        data.issue.comments.push(comment);
+        if (data.issue.projectName === 'local') {
+          url  = 'issues';
+          body = JSON.stringify(data.issue);
+        } else {
+          url  = data.issue.comments_url + '?' + this.accessToken();
+          body = JSON.stringify({body: data.comment});
+        }
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: body,
+          contentType: 'application/json',
+          success: function (response, status, xhr) {
+            this.trigger('data:got:issue', data.issue);
+          }.bind(this)
+        });
       };
 
       this.after('initialize', function () {
