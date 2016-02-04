@@ -7,7 +7,7 @@ var app = express();
 var cookieParser = require('cookie-parser');
 var configurable = require('./lib/configurable');
 var fs = require('fs');
-var basePath = process.env.APP_DATA || '/usr/local/var/cozy/tablero';
+var basePath = process.env.APPLICATION_PERSISTENT_DIRECTORY || '/usr/local/var/cozy/tablero';
 
 var configServer = require('./config/server.js');
 
