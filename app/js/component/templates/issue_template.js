@@ -74,7 +74,7 @@ define(['config/config_bootstrap'],
           '<span class="empty-avatar-label">ASSIGN ME</span>' +
           '<img class="assignee-avatar" title="{{assignee.login}}" src="{{assignee.avatar_url}}" />' +
           '</a>' +
-          '<a href="{{html_url}}" target="_blank"><span class="issue-number right">#{{number}}</span></a>' +
+          (projectName === 'local' ? '' : '<a href="{{html_url}}" target="_blank" class="issue-link"><span class="issue-number right">#{{number}}</span></a>') +
           '</div>' +
           '<div class="issue-body">' +
           '{{title}}' +
